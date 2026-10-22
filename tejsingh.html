@@ -113,20 +113,42 @@ background: red;
 
 ></iframe>
 </div>
-<script>
-const likeButtons = document.querySelectorAll(".likeButtons")
-const numLikes = document.querySelectorAll(".numLikes")
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
+ // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
 
-for (let i=0; i<likeButtons.length; i++) {
-likeButtons[i].addEventListener('click', function(){ Like(i) })
-}
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyB0Sjw-8MyzpXPqHoz7rVcWfCjPZdK08l8",
+    authDomain: "like-buttonzz02.firebaseapp.com",
+    projectId: "like-buttonzz02",
+    storageBucket: "like-buttonzz02.firebasestorage.app",
+    messagingSenderId: "353825131332",
+    appId: "1:353825131332:web:63b01c551aecff0db2e511"
+  };
 
-function Like(i) {
-let numberLikes = parseInt(numLikes[i].innerHTML)
-numberLikes = numberLikes + 1
-numLikes[i].innerHTML = numberLikes	
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+ const db = getDatabase(app);
+let numLikes = document.querySelectorAll('.numLikes');
+let likeButtons = document.querySelectorAll('.likeButtons');
+
+for (let i = 0; i < likeButtons.length; i++) {
+  let numberLikes = 0;
+  likeButtons[i].addEventListener('click', function() {
+    numberLikes++;
+    set(ref(db, "project " + i), {
+      numLikes: numberLikes
+    });
+ onValue(ref(db, "project " + i + "/numLikes"), (snapshot) => {
+        let data = snapshot.val();
+        numLikes[i].innerHTML = data;
+      });
 }
-</script>
+</script>        
 
 
 
