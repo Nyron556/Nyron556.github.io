@@ -117,12 +117,10 @@ background: red;
   // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
   import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
- // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
 
   // Your web app's Firebase configuration
   const firebaseConfig = {
-    apiKey: "AIzaSyB0Sjw-8MyzpXPqHoz7rVcWfCjPZdK08l8",
+    apiKey: "AIzaSyB0SjW-8MyzpXPqHoz7rVcwFcjPZdK0818",
     authDomain: "like-buttonzz02.firebaseapp.com",
     projectId: "like-buttonzz02",
     storageBucket: "like-buttonzz02.firebasestorage.app",
@@ -133,23 +131,31 @@ background: red;
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
-let numLikes = document.querySelectorAll('.numLikes');
+
+  let numLikes = document.querySelectorAll('.numLikes');
   let likeButtons = document.querySelectorAll('.likeButtons');
 
   for (let i = 0; i < likeButtons.length; i++) {
     let numberLikes = 0;
 
-    // Listen to Firebase for the current count when the page loads
-    onValue(ref(db, "project " + i), (snapshot) => {
+    // Step 26: Listen to live updates from Firebase
+    onValue(ref(db, "project " + i + "/numLikes"), (snapshot) => {
       let data = snapshot.val();
-      if (data && data.numLikes !== undefined) {
-        numberLikes = data.numLikes;
-        numLikes[i].innerHTML = numberLikes;
-      } else {
-        numLikes[i].innerHTML = 0;
+      if (data !== null) {
+        numberLikes = data;
+        numLikes[i].innerHTML = data;
       }
     });
 
+    // Save click to Firebase
+    likeButtons[i].addEventListener('click', function() {
+      numberLikes++;
+      set(ref(db, "project " + i), {
+        numLikes: numberLikes
+      });
+    });
+  }
+</script>
     // Save updated count when button is clicked
     likeButtons[i].addEventListener('click', function() {
       numberLikes++;
