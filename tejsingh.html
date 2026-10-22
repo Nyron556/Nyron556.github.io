@@ -118,12 +118,14 @@ background: red;
   import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
   import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
 
-  // Firebase configuration
+  // Firebase configuration with explicit Database URL
   const firebaseConfig = {
     apiKey: "AIzaSyB0SjW-8MyzpXPqHoz7rVcwFcjPZdK0818",
     authDomain: "like-buttonzz02.firebaseapp.com",
+    databaseURL: "https://like-buttonzz02-default-rtdb.firebaseio.com",
     projectId: "like-buttonzz02",
-    storageBucket: "like-buttonzz02.firebasestorage.app",
+   databaseURL: "[https://like-buttonzz02-default-rtdb.firebaseio.com](https://like-buttonzz02-default-rtdb.firebaseio.com)",
+   storageBucket: "like-buttonzz02.firebasestorage.app",
     messagingSenderId: "353825131332",
     appId: "1:353825131332:web:63b01c551aecff0db2e511"
   };
@@ -138,7 +140,7 @@ background: red;
   for (let i = 0; i < likeButtons.length; i++) {
     let numberLikes = 0;
 
-    // Step 26: Display database likes on website & keep count in sync
+    // Step 26: Sync Firebase count to page
     onValue(ref(db, "project " + i + "/numLikes"), (snapshot) => {
       let data = snapshot.val();
       if (data !== null) {
@@ -147,7 +149,7 @@ background: red;
       }
     });
 
-    // Step 21: Update database on click
+    // Step 21: Save click count to Firebase
     likeButtons[i].addEventListener('click', function() {
       numberLikes++;
       set(ref(db, "project " + i), {
@@ -156,7 +158,6 @@ background: red;
     });
   }
 </script>
-
 
 
 </body> 
