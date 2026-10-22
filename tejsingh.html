@@ -114,6 +114,20 @@ background: red;
 ></iframe>
 
 </div>
+<script>
+	const likeButtons = document.querySelectorAll(".likeButtons")
+	const numLikes = document.querySelectorAll(".numLikes")
+
+	for (let i=0; i<likeButtons.length; i++) {
+		likeButtons[i].addEventListener('click', function(){ Like(i) })
+	}
+
+	function Like(i) {
+		let numberLikes = parseInt(numLikes[i].innerHTML)
+		numberLikes = numberLikes + 1
+		numLikes[i].innerHTML = numberLikes	
+	}
+</script>
 
 
 
