@@ -133,22 +133,32 @@ background: red;
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
-
-  let numLikes = document.querySelectorAll('.numLikes');
+let numLikes = document.querySelectorAll('.numLikes');
   let likeButtons = document.querySelectorAll('.likeButtons');
 
   for (let i = 0; i < likeButtons.length; i++) {
     let numberLikes = 0;
+
+    // Listen to Firebase for the current count when the page loads
+    onValue(ref(db, "project " + i), (snapshot) => {
+      let data = snapshot.val();
+      if (data && data.numLikes !== undefined) {
+        numberLikes = data.numLikes;
+        numLikes[i].innerHTML = numberLikes;
+      } else {
+        numLikes[i].innerHTML = 0;
+      }
+    });
+
+    // Save updated count when button is clicked
     likeButtons[i].addEventListener('click', function() {
       numberLikes++;
       set(ref(db, "project " + i), {
         numLikes: numberLikes
       });
     });
-
-    onValue(ref(db, "project " + i + "/numLikes"), (snapshot) => {
-      let data = snapshot.val();
-      numLikes[i].innerHTML = data;
+  }
+</script>
     });
   }
 </script>        
