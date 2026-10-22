@@ -114,7 +114,7 @@ background: red;
 </iframe>
 </div>
 <script type="module">
-  // Import the functions you need from the SDKs you need
+  // Step 17 & 18: SDK Imports
   import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
   import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
 
@@ -128,7 +128,7 @@ background: red;
     appId: "1:353825131332:web:63b01c551aecff0db2e511"
   };
 
-  // Initialize Firebase
+  // Step 20: Initialize Firebase & Database
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
@@ -138,38 +138,21 @@ background: red;
   for (let i = 0; i < likeButtons.length; i++) {
     let numberLikes = 0;
 
-    // Step 26: Listen to live updates from Firebase
+    // Step 21: Update database on click
+    likeButtons[i].addEventListener('click', function() {
+      numberLikes++;
+      set(ref(db, "project " + i), {
+        numLikes: numberLikes
+      });
+    });
+
+    // Step 26: Display database likes on website
     onValue(ref(db, "project " + i + "/numLikes"), (snapshot) => {
       let data = snapshot.val();
-      if (data !== null) {
-        numberLikes = data;
-        numLikes[i].innerHTML = data;
-      }
-    });
-
-    // Save click to Firebase
-    likeButtons[i].addEventListener('click', function() {
-      numberLikes++;
-      set(ref(db, "project " + i), {
-        numLikes: numberLikes
-      });
+      numLikes[i].innerHTML = data;
     });
   }
 </script>
-    // Save updated count when button is clicked
-    likeButtons[i].addEventListener('click', function() {
-      numberLikes++;
-      set(ref(db, "project " + i), {
-        numLikes: numberLikes
-      });
-    });
-  }
-</script>
-    });
-  }
-</script>        
-
-
 
 
 
