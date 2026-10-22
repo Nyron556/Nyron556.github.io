@@ -114,9 +114,11 @@ background: red;
 </iframe>
 </div>
 <script type="module">
+  // Step 17 & 18: SDK Imports
   import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
   import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
 
+  // Firebase configuration
   const firebaseConfig = {
     apiKey: "AIzaSyB0SjW-8MyzpXPqHoz7rVcwFcjPZdK0818",
     authDomain: "like-buttonzz02.firebaseapp.com",
@@ -126,6 +128,7 @@ background: red;
     appId: "1:353825131332:web:63b01c551aecff0db2e511"
   };
 
+  // Step 20: Initialize Firebase & Database
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
@@ -135,16 +138,16 @@ background: red;
   for (let i = 0; i < likeButtons.length; i++) {
     let numberLikes = 0;
 
-    // Step 26: Read from Firebase and sync local counter
+    // Step 26: Display database likes on website & keep count in sync
     onValue(ref(db, "project " + i + "/numLikes"), (snapshot) => {
       let data = snapshot.val();
       if (data !== null) {
-        numberLikes = data; // <--- THIS WAS MISSING
+        numberLikes = data;
         numLikes[i].innerHTML = data;
       }
     });
 
-    // Step 21: Increment synced counter on click
+    // Step 21: Update database on click
     likeButtons[i].addEventListener('click', function() {
       numberLikes++;
       set(ref(db, "project " + i), {
