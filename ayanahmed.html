@@ -1,136 +1,109 @@
 <!DOCTYPE html>
-
+<html>
 <head>
-
-<style>
-
-body{
-
-text-align:center;
-
-font-size:20px;
-
-color:#000080;
-
-background: #996515;
-
-}
-
-
-.embed-box {
-
-margin: 75px 0px 75px 0px;
-
-}
-
-
-</style>
-
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0" />
+	<style>
+		body {
+			text-align: center;
+			font-size: 20px;
+			color: #000080;
+			background: #996515;
+		}
+		
+		.embed-box {
+			margin: 75px 0px 75px 0px;
+		}
+	</style>
 </head>
-
-
-
+	
 <body>
+	<h1>My Digital Projects, by Ayan Ahmed</h1>
+	
+	<div class="embed-box">
+		<h2>My 1st Project: Infographic about a Place</h2>
+		<iframe
+		  src="https://new.express.adobe.com/embedLink/urn:aaid:sc:VA6C2:722d4d1a-5346-5a2b-9dd5-07a6d19cee1d?promoid=Y69SGM5H&sdid=C4SZ2FYJ&mv=other"
+		  width="1280"
+		  height="720"
+		  loading="lazy"
+		  allowfullscreen="allowfullscreen"
+		  allow="clipboard-write; fullscreen"
+		  referrerpolicy="strict-origin-when-cross-origin"
+		  frameborder="0"
+		  style="width:80%; max-width:1280px; height:auto; aspect-ratio:1280/720; border:0; display:block; margin:0 auto;"
+		></iframe>
+		
+		<button class="likeButtons">Like</button>
+		<span class="numLikes">0</span>
+	</div>		
+		
+	<div class="embed-box">
+		<h2>My 2nd Project: Video about My Day</h2>
+		<iframe
+		  src="https://new.express.adobe.com/embedLink/urn:aaid:sc:VA6C2:4e85dafc-569b-58a9-b720-0c54a6596b46?promoid=Y69SGM5H&sdid=C4SZ2FYJ&mv=other"
+		  width="1280"
+		  height="720"
+		  loading="lazy"
+		  allowfullscreen="allowfullscreen"
+		  allow="clipboard-write; fullscreen"
+		  referrerpolicy="strict-origin-when-cross-origin"
+		  frameborder="0"
+		  style="width:80%; max-width:1280px; height:auto; aspect-ratio:1280/720; border:0; display:block; margin:0 auto;"
+		></iframe>
+		
+		<button class="likeButtons">Like</button>
+		<span class="numLikes">0</span>
+	</div>
 
-<h1>My Digital Projects, by Ayan Ahmed</h1>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
 
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyAl0fUrQXVj_KtxKqjhaOnRx24OOKK2rtU",
+    authDomain: "aa-like-buttonzz.firebaseapp.com",
+    databaseURL: "https://aa-like-buttonzz-default-rtdb.firebaseio.com",
+    projectId: "aa-like-buttonzz",
+    storageBucket: "aa-like-buttonzz.firebasestorage.app",
+    messagingSenderId: "347496541913",
+    appId: "1:347496541913:web:9a005fab4a67a1f2f298c8"
+  };
 
-<div class=embed-box>
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
 
-<h2>My 1st Project: Infographic about a Place</h2>
+  // Step 5: Select elements and attach event listeners
+  const likeButtons = document.querySelectorAll(".likeButtons");
+  const numLikes = document.querySelectorAll(".numLikes");
 
-<iframe
+  for (let i = 0; i < likeButtons.length; i++) {
+    likeButtons[i].addEventListener('click', function() { Like(i); });
 
-  src="https://new.express.adobe.com/embedLink/urn:aaid:sc:VA6C2:722d4d1a-5346-5a2b-9dd5-07a6d19cee1d?promoid=Y69SGM5H&sdid=C4SZ2FYJ&mv=other"
+    // Sync live count from Firebase so reload doesn't reset to 0
+    const projectRef = ref(db, "project " + i);
+    onValue(projectRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data && data.numLikes !== undefined) {
+        numLikes[i].innerHTML = data.numLikes;
+      }
+    });
+  }
 
-  width="1280"
-
-  height="720"
-
-  loading="lazy"
-
-  allowfullscreen="allowfullscreen"
-
-  allow="clipboard-write; fullscreen"
-
-  referrerpolicy="strict-origin-when-cross-origin"
-
-  frameborder="0"
-
-  style="width:80%; max-width:1280px; height:auto; aspect-ratio:1280/720; border:0; display:block; margin:0 auto;"
-
-></iframe>
-
-
-<button class="likeButtons">Like</button>
-
-<span class="numLikes">0</span>
-
-
-</div>
-
-
-
-<div class="embed-box">
-
-<h2>My 2nd Project: Video about My Day</h2>
-
-<iframe
-
-  src="https://new.express.adobe.com/embedLink/urn:aaid:sc:VA6C2:4e85dafc-569b-58a9-b720-0c54a6596b46?promoid=Y69SGM5H&sdid=C4SZ2FYJ&mv=other"
-
-  width="1280"
-
-  height="720"
-
-  loading="lazy"
-
-  allowfullscreen="allowfullscreen"
-
-  allow="clipboard-write; fullscreen"
-
-  referrerpolicy="strict-origin-when-cross-origin"
-
-  frameborder="0"
-
-  style="width:80%; max-width:1280px; height:auto; aspect-ratio:1280/720; border:0; display:block; margin:0 auto;"
-
-></iframe>
-
-
-<button class="likeButtons">Like</button>
-
-<span class="numLikes">0</span>
-
-
-</div>
-
-
-<script>
-
-const likeButtons = document.querySelectorAll(".likeButtons")
-
-const numLikes = document.querySelectorAll(".numLikes")
-
-
-for (let i=0; i<likeButtons.length; i++) {
-
-likeButtons[i].addEventListener('click', function(){ Like(i) })
-
-}
-
-
+ // Step 21: Updated Like function
 function Like(i) {
-
-let numberLikes = parseInt(numLikes[i].innerHTML)
-
-numberLikes = numberLikes + 1
-
-numLikes[i].innerHTML = numberLikes
-
+  let numberLikes = parseInt(numLikes[i].innerHTML) || 0;
+  numberLikes = numberLikes + 1;
+  numLikes[i].innerHTML = numberLikes;
+  set(ref(db, "project " + i), {
+    numLikes: numberLikes
+  });
 }
-
 </script>
+
+
 
 
 
