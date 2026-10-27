@@ -111,43 +111,52 @@ background: red;
 
 
 <script type="module">
-  // Step 17 & 19: Firebase Imports
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
-  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
+    // Step 17 & 19: Firebase Imports
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+    import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
 
-  // Step 17: Firebase Config
-  const firebaseConfig = {
-    apiKey: "AIzaSyCv3wGXrXov6kHYdRIyJzWQPE6mrIseR8o",
-    authDomain: "like-buttonzzz02.firebaseapp.com",
-    projectId: "like-buttonzzz02",
-    storageBucket: "like-buttonzzz02.firebasestorage.app",
-    messagingSenderId: "496610290917",
-    appId: "1:496610290917:web:1d23ac7079b5f3b247f80c"
-  };
+    // Step 17: Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyCv3wGXrXov6kHYdRIyJzWQPE6mrIseR8o",
+      authDomain: "like-buttonzzz02.firebaseapp.com",
+      projectId: "like-buttonzzz02",
+      storageBucket: "like-buttonzzz02.firebasestorage.app",
+      messagingSenderId: "496610290917",
+      appId: "1:496610290917:web:1d23ac7079b5f3b247f80c"
+    };
 
-  // Step 20: Initialize Firebase & Database
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
+    // Step 20: Initialize Firebase & Database
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
-  // Step 5: Select elements and attach event listeners
-  const likeButtons = document.querySelectorAll(".likeButtons");
-  const numLikes = document.querySelectorAll(".numLikes");
+    // Select elements
+    const likeButtons = document.querySelectorAll(".likeButtons");
+    const numLikes = document.querySelectorAll(".numLikes");
 
-  for (let i = 0; i < likeButtons.length; i++) {
-    likeButtons[i].addEventListener('click', function() { Like(i); });
-  }
+    // Loop through each button to listen for clicks and pull stored data from Firebase
+    for (let i = 0; i < likeButtons.length; i++) {
+      // 1. Listen for clicks to write to Firebase
+      likeButtons[i].addEventListener('click', function() { Like(i); });
 
-  // Step 21: Updated Like function (updates page AND saves to Firebase)
-  function Like(i) {
-    let numberLikes = parseInt(numLikes[i].innerHTML);
-    numberLikes = numberLikes + 1;
-    numLikes[i].innerHTML = numberLikes;
-    set(ref(db, "project " + i), {
-      numLikes: numberLikes,
-    });
-  }
-</script>
+      // 2. Read live data from Firebase so it stays recorded on reload
+      const projectRef = ref(db, "project " + i);
+      onValue(projectRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data && data.numLikes !== undefined) {
+          numLikes[i].innerHTML = data.numLikes;
+        }
+      });
+    }
 
+    // Like function saves the new count to Firebase
+    function Like(i) {
+      let numberLikes = parseInt(numLikes[i].innerHTML);
+      numberLikes = numberLikes + 1;
+      set(ref(db, "project " + i), {
+        numLikes: numberLikes,
+      });
+    }
+  </script>
 
 
 
